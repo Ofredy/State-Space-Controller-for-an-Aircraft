@@ -54,54 +54,65 @@ B = [1, 0, 0;
      0, 0, 0];
 
 C = [0, 0, 0, 1, 0, 0, 0, 0, 0;
+     0, 0, 0, 0, 0, 0, 0, 1, 0;
      0, 0, 0, 0, 0, 0, 0, 0, 1];
 
 D = 0;
 
 
 %%%%%%%%%% Open loop system analysis %%%%%%%%%%
-open_loop_sys = ss(A, B, C, D, 'InputName', {'Elevator', 'Aileron', 'Rubber'}, 'OutputName', {'Pitch', 'Roll'});
+open_loop_sys = ss(A, B, C, D, 'InputName', {'Elevator', 'Aileron', 'Rubber'}, 'OutputName', {'Pitch', 'Yaw', 'Roll'});
 T = tf(open_loop_sys);
 
 
-%%%%%%%%%% Time analysis %%%%%%%%%%
-% impulse response
+%%%%%%%%%% Pitch Analysis %%%%%%%%%%
 figure(1)
 subplot(1, 3, 1)
 impulse(T(1, 1))
 
 subplot(1, 3, 2)
-impulse(T(2, 2))
-subplot(1, 3, 3)
-impulse(T(2, 3))
-
-% step response
-figure(2)
-subplot(1, 3, 1)
 step(T(1, 1))
 
-subplot(1, 3, 2)
-step(T(2, 2))
 subplot(1, 3, 3)
-step(T(2, 3))
-
-%%%%%%%%%% Frequency analysis%%%%%%%%%%
-figure(3)
-subplot(1, 3, 1)
 bode(T(1, 1))
 [gm_pitch_input_elevator, pm_pitch_input_elevator] = margin(T(1, 1));
 
-subplot(1, 3, 2)
+
+%%%%%%%%%% Yaw Analysis %%%%%%%%%%
+figure(2)
+subplot(3, 2, 1)
+impulse(T(2, 2))
+subplot(3, 2, 2)
+impulse(T(2, 3))
+
+subplot(3, 2, 3)
+step(T(2, 2))
+subplot(3, 2, 4)
+step(T(2, 3))
+
+subplot(3, 2, 5)
 bode(T(2, 2))
-[gm_roll_input_aileron, pm_roll_input_aileron] = margin(T(2, 2));
-subplot(1, 3, 3)
+[gm_yaw_input_aileron, pm_yaw_input_aileron] = margin(T(2, 2));
+subplot(3, 2, 6)
 bode(T(2, 3))
-[gm_roll_input_rubber, pm_roll_input_rubber] = margin(T(2, 3));
+[gm_yaw_input_rubber, pm_yaw_input_rubber] = margin(T(2, 3));
 
 
+%%%%%%%%%% Roll Analysis %%%%%%%%%%
+figure(3)
+subplot(3, 2, 1)
+impulse(T(3, 2))
+subplot(3, 2, 2)
+impulse(T(3, 3))
 
+subplot(3, 2, 3)
+step(T(3, 2))
+subplot(3, 2, 4)
+step(T(3, 3))
 
-
-
-
-
+subplot(3, 2, 5)
+bode(T(3, 2))
+[gm_roll_input_aileron, pm_roll_input_aileron] = margin(T(3, 2));
+subplot(3, 2, 6)
+bode(T(3, 3))
+[gm_roll_input_rubber, pm_roll_input_rubber] = margin(T(3, 3));
