@@ -60,36 +60,26 @@ C = [0, 0, 0, 1, 0, 0, 0, 0, 0;
 D = 0;
 
 
-% Linear Quadratic Regulator Design
-open_loop_sys = ss(A, B, C, D);
+% Controller design
+is_controlllable = rank(ctrb(A, B)) == 9;
 
-Ql = [1, 0, 0, 0, 0, 0, 0, 0, 0;
-      0, 1, 0, 0, 0, 0, 0, 0, 0;
-      0, 0, 135, 0, 0, 0, 0, 0, 0;
-      0, 0, 0, 1, 0, 0, 0, 0, 0;
-      0, 0, 0, 0, 1, 0, 0, 0, 0;
-      0, 0, 0, 0, 0, 100, 0, 0, 0;
-      0, 0, 0, 0, 0, 0, 100, 0, 0;
-      0, 0, 0, 0, 0, 0, 0, 1, 0;
-      0, 0, 0, 0, 0, 0, 0, 0, 1];
-
-Rl = [125, 0, 0;
-      0, 1, 0;
-      0, 0, 1];
-
-[K, P, eigen_values] = lqr(open_loop_sys, Ql, Rl);
-
-is_pd = issymmetric(P) & det(P) > 0;
-
-
-% Closed loop system analysis lqr controller
-if is_pd
+if is_controlllable
     
-    % Defining closed loop system
-    lqr_closed_loop_sys = ss(A-B*K, B, C, D, 'InputName', {'Elevator', 'Aileron', 'Rubber'}, 'OutputName', {'Pitch', 'Yaw', 'Roll'});
+    p = [-0.5 + 0.0000i;
+         -1.1439 + 1.9025i;
+         -1.1439 - 1.9025i;
+         -0.3439 + 0.8818i;
+         -0.3439 - 0.8818i;
+         -0.6483 + 0.4170i;
+         -0.6483 - 0.4170i;
+         -0.1711 + 0.0000i;
+         -0.0246 + 0.0000i];
+
+    K = place(A, B, p)
+    state_feedback_closed_loop_sys = ss(A-B*K, B, C, D, 'InputName', {'Elevator', 'Aileron', 'Rubber'}, 'OutputName', {'Pitch', 'Yaw', 'Roll'});
     T = tf(lqr_closed_loop_sys);
 
-   %%%%%%%%%% Pitch Analysis %%%%%%%%%%
+    %%%%%%%%%% Pitch Analysis %%%%%%%%%%
     figure(1)
     subplot(1, 3, 1)
     impulse(T(1, 1))
@@ -140,9 +130,3 @@ if is_pd
     [gm_roll_input_rubber, pm_roll_input_rubber] = margin(T(3, 3))
 
 end
-
-
-
-
-
-

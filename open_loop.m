@@ -75,7 +75,7 @@ step(T(1, 1))
 
 subplot(1, 3, 3)
 bode(T(1, 1))
-[gm_pitch_input_elevator, pm_pitch_input_elevator] = margin(T(1, 1));
+[gm_pitch_input_elevator, pm_pitch_input_elevator] = margin(T(1, 1))
 
 
 %%%%%%%%%% Yaw Analysis %%%%%%%%%%
@@ -92,10 +92,10 @@ step(T(2, 3))
 
 subplot(3, 2, 5)
 bode(T(2, 2))
-[gm_yaw_input_aileron, pm_yaw_input_aileron] = margin(T(2, 2));
+[gm_yaw_input_aileron, pm_yaw_input_aileron] = margin(T(2, 2))
 subplot(3, 2, 6)
 bode(T(2, 3))
-[gm_yaw_input_rubber, pm_yaw_input_rubber] = margin(T(2, 3));
+[gm_yaw_input_rubber, pm_yaw_input_rubber] = margin(T(2, 3))
 
 
 %%%%%%%%%% Roll Analysis %%%%%%%%%%
@@ -112,7 +112,7 @@ step(T(3, 3))
 
 subplot(3, 2, 5)
 bode(T(3, 2))
-[gm_roll_input_aileron, pm_roll_input_aileron] = margin(T(3, 2));
+[gm_roll_input_aileron, pm_roll_input_aileron] = margin(T(3, 2))
 subplot(3, 2, 6)
 bode(T(3, 3))
-[gm_roll_input_rubber, pm_roll_input_rubber] = margin(T(3, 3));
+[gm_roll_input_rubber, pm_roll_input_rubber] = margin(T(3, 3))
